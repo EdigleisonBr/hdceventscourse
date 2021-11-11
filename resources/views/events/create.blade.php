@@ -17,7 +17,7 @@
         </div>
         <div class="form-group">
             <label for="title">Evento:</label>
-            <input type="text" class="form-control" id="title" name="title" onblur="teste(this)" placeholder="Nome do evento">
+            <input type="text" class="form-control" id="title" name="title" onblur="teste()" placeholder="Nome do evento">
             <!-- <input type="text" class="form-control text-uppercase" id="title" name="title" placeholder="Nome do evento"> -->
         </div>
         @if(count($errors)>0)
@@ -36,7 +36,7 @@
         </div>
         <div class="form-group">
             <label for="text">Cidade:</label>
-            <input type="text" class="form-control" id="city" name="city"  placeholder="Local do evento">
+            <input type="text" class="form-control" id="city" name="city" onblur="validaCidade()"  placeholder="Local do evento">
         </div>
         <div class="form-group">
             <label for="private">O evento é privado?</label>
@@ -73,20 +73,5 @@
     </form> 
     
 </div>
-<script>
-    function teste(obj){
-        var x = obj.value;
-        if (x.length<3) {
-            alert('O campo deve ter no mínimo 3 caracteres!');
-            return false;
-            obj.focus();
-        }
-    }
-    // function teste(){
-    //     var x = document.getElementsByName("title");
-    //     if(x.length < 3){
-    //         return back()->with('toast_error', 'Nome do Evento não pode ter menos que 3 caracteres!');
-    //     }
-    // }
-</script>
 @endsection
+

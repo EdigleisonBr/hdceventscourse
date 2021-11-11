@@ -36,9 +36,6 @@ Route::post('/events/join/{id}', [EventController::class, 'joinEvent'])->middlew
 
 Route::get('/users/create', [UserController::class, 'create'])->middleware('auth');
 
-
-
-
 Route::get('/contact', function () {
     //Alert::success('Success Title', 'Success Message');
     //alert()->info('Title','Lorem Lorem Lorem');

@@ -93,8 +93,11 @@
         HDC Events &copy; 2020
     </footer>
 
+    @yield('scripts')
+    
     <!-- icons -->
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    
     @include('sweetalert::alert')
     </body>
 </html>
