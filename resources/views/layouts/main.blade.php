@@ -42,9 +42,9 @@
                         <li class="nav-item">
                             <a href="/events/create" class="nav-link">Criar Eventos</a>
                         </li>
-                        <!-- <li class="nav-item">
-                            <a href="/contact" class="nav-link">Ponto</a>
-                        </li> -->
+                        <li class="nav-item">
+                            <a href="/users" class="nav-link">Criar Usuário</a>
+                        </li> 
                         @auth
                         <li class="nav-item">
                             <a href="/dashboard" class="nav-link">Meus Eventos</a>
@@ -93,8 +93,11 @@
         HDC Events &copy; 2020
     </footer>
 
+    @yield('scripts')
+    
     <!-- icons -->
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    
     @include('sweetalert::alert')
     </body>
 </html>

@@ -153,5 +153,6 @@ class EventController extends Controller
         alert($event);
         return redirect('/dashboard')->with('toast_success', 'Sua presença foi confirmada no evento '.$event->title);
     }
+
 }
 

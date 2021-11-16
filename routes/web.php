@@ -18,6 +18,7 @@ use RealRashid\SweetAlert\Facades\Alert;
 // Importando Controllers
 
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\UserController;
 
 Route::get('/dashboard', [EventController::class, 'dashboard'])->middleware('auth');
 Route::get('/', [EventController::class, 'index']);
@@ -33,8 +34,7 @@ Route::put('/events/update/{id}', [EventController::class, 'update'])->middlewar
 // Usuários participantes dos eventos
 Route::post('/events/join/{id}', [EventController::class, 'joinEvent'])->middleware('auth');
 
-
-
+Route::get('/users/create', [UserController::class, 'create'])->middleware('auth');
 
 Route::get('/contact', function () {
     //Alert::success('Success Title', 'Success Message');
