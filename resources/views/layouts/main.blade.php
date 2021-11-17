@@ -28,14 +28,18 @@
                     <a href="/" class="navbar-brand">
                         <img src="/img/hdcevents_logo.svg" alt="HDC Events">
                     </a>
-                    <div>
-                        @if (Auth::guest())
-                        <p>Convidado</p>
-                        @else
-                            <p>{{Auth::user()->name}}</p>
-                        @endif
-                    </div>
                     <ul class="navbar-nav">
+                        
+                        @if (Auth::guest())
+                            <li class="nav-item">
+                                <a class="nav-link text-success fw-bold bg-dark rounded">Convidado</a>
+                            </li>
+                        @else
+                            <li class="nav-item">
+                                <a class="nav-link text-warning fw-bold bg-dark rounded">{{Auth::user()->name}}</a>
+                            </li>
+                        @endif
+                        
                         <li class="nav-item">
                             <a href="/" class="nav-link">Eventos</a>
                         </li>
