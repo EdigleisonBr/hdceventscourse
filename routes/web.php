@@ -35,6 +35,13 @@ Route::put('/events/update/{id}', [EventController::class, 'update'])->middlewar
 // Usuários participantes dos eventos
 Route::post('/events/join/{id}', [EventController::class, 'joinEvent'])->middleware('auth');
 
+<<<<<<< HEAD
+=======
+// Sair do evento
+Route::delete('/events/leave/{id}', [EventController::class, 'leaveEvent'])->middleware('auth');
+
+Route::get('/users/create', [UserController::class, 'create'])->middleware('auth');
+>>>>>>> cdfd3a9162e480d1df77c7348668824e4f72dbdf
 
 Route::get('/crud_index', [CrudController::class, 'index']);
 Route::get('/crud_create', [CrudController::class, 'create']);
