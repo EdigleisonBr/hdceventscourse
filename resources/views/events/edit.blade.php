@@ -38,7 +38,7 @@
         </div>
         <div class="form-group">
             <label for="text">Cidade:</label>
-            <input type="text" class="form-control" id="city" name="city"  placeholder="Local do evento" value="{{$event->city}}">
+            <input type="text" class="form-control" id="city" name="city"  placeholder="Local do evento" value= {{$event->id}}>
         </div>
         <div class="form-group">
             <label for="private">O evento é privado?</label>

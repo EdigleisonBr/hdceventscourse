@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-
 use App\Models\Event;
+use App\Models\Address;
 use App\Models\User;
 
 class EventController extends Controller
@@ -46,13 +46,25 @@ class EventController extends Controller
         // }
 
         $event = new Event;
-
+        
+        $event->active = intval($request->get('active'));
         $event->title = $request->title;
         $event->date = $request->date;
         $event->city = strtoupper($request->city);
         $event->private = $request->private;
         $event->description = $request->description;
         $event->items = $request->items;
+
+        $address = new Address;
+        
+        $address->zip_code       = $request->zip_code; 
+        $address->street         = $request->street;
+        $address->address_number = $request->address_number;
+        $address->complement     = $request->complement;
+        $address->city           = $request->city;
+        $address->state          = $request->state;
+        $address->neighborhood   = $request->neighborhood;
+        $address->event_id       = $request->event_id;
 
         //Image upload
         if($request->hasFile('image') && $request->file('image')->isValid()) {
@@ -66,7 +78,6 @@ class EventController extends Controller
           $requestImage->move(public_path('img/events'), $imageName);
 
           $event->image = $imageName;
-
         }
 
         // guardando usuário autenticado no banco
@@ -74,6 +85,7 @@ class EventController extends Controller
         $event->user_id = $user->id;
 
         $event->save();
+        $address->save();
 
         return redirect('/')->with('toast_success', 'Evento criado com sucesso!');
     }
@@ -83,6 +95,7 @@ class EventController extends Controller
         $event = Event::findOrFail($id);
 
         $eventOwner = User::where('id', $event->user_id)->first()->toArray();
+        
         return view('events.show', ['event' => $event, 'eventOwner' => $eventOwner]);
     }
 
@@ -142,16 +155,62 @@ class EventController extends Controller
         return redirect('/dashboard')->with('toast_success', 'Evento editado com sucesso!');
     }
 
+    public function createAddress(){
+        return view('address.create');
+    }
+
+    public function create_address(Request $request){
+
+        $address = new Address;
+        
+        $address->zip_code       = $request->zip_code; 
+        $address->street         = $request->street;
+        $address->address_number = $request->address_number;
+        $address->complement     = $request->complement;
+        $address->city           = $request->city;
+        $address->state          = $request->state;
+        $address->neighborhood   = $request->neighborhood;
+        $address->event_id       = $request->event_id;
+
+        $address->save();
+
+        return redirect('/')->with('toast_success', 'Endereço criado com sucesso!');
+    }
+
     public function joinEvent($id){
 
         $user = auth()->user();
         alert($user);
         //Vincular o usuário ao evento
         $user->eventsAsParticipant()->attach($id);
-        alert($id);
         $event = Event::findOrFail($id);
-        alert($event);
         return redirect('/dashboard')->with('toast_success', 'Sua presença foi confirmada no evento '.$event->title);
+    }
+
+    public function validaNome(){
+
+        $validaNome = request()->get('name');
+
+        $searchUser = User::select(
+        [
+            "name",
+            'email'
+        ])
+        ->where('name', '=', $validaNome)
+        ->first();
+
+        if ($searchUser != null){ // ele vai pro .fail
+           //return response()->json(['success' => true, 'aux1' => $searchUser->name, 'aux2' => $searchUser->email], 422); 
+           return response()->json(['success' => true, 'aux' => $searchUser->name], 422);
+        }
+        else{
+            return response()->json(['success' => false]);  
+        }
+
+        //return response()->json(['success' => true, $validaNome], 422);
+
+        
+      
     }
 
 }

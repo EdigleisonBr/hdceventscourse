@@ -8,7 +8,6 @@
 
         <!-- Fonte do Google -->
         <link href="https://fonts.googleapis.com/css2?family=Roboto" rel="stylesheet">
-        
 
         <!-- Css do Bootstrap -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
@@ -16,9 +15,6 @@
         <!-- CSS da Aplicação -->
         <link rel="stylesheet" href="/css/styles.css">
 
-        <!-- JS da aplicação -->
-        <script src="/js/scripts.js"></script>
-        
     <head>
 
     <body>
@@ -28,14 +24,18 @@
                     <a href="/" class="navbar-brand">
                         <img src="/img/hdcevents_logo.svg" alt="HDC Events">
                     </a>
-                    <div>
-                        @if (Auth::guest())
-                        <p>Convidado</p>
-                        @else
-                            <p>{{Auth::user()->name}}</p>
-                        @endif
-                    </div>
                     <ul class="navbar-nav">
+                        
+                        @if (Auth::guest())
+                            <li class="nav-item">
+                                <a class="nav-link text-success fw-bold bg-dark rounded">Convidado</a>
+                            </li>
+                        @else
+                            <li class="nav-item">
+                                <a class="nav-link text-warning fw-bold bg-dark rounded">{{Auth::user()->name}}</a>
+                            </li>
+                        @endif
+                        
                         <li class="nav-item">
                             <a href="/" class="nav-link">Eventos</a>
                         </li>
@@ -43,7 +43,7 @@
                             <a href="/events/create" class="nav-link">Criar Eventos</a>
                         </li>
                         <li class="nav-item">
-                            <a href="/users" class="nav-link">Criar Usuário</a>
+                            <a href="/addresses/create" class="nav-link">Endereços</a>
                         </li> 
                         @auth
                         <li class="nav-item">
@@ -77,7 +77,7 @@
             </nav>
         </header>
         <main>
-            <div class="container-fluid">
+            <div class="container">
                 <div class="row">
                     @if(session('success_message'))
                         <div class="alert alert-success">
@@ -94,10 +94,21 @@
     </footer>
 
     @yield('scripts')
+
+    <!-- JS da aplicação -->
+    <script src="/js/scripts.js"></script>
+
+    <!-- Sweet Alert -->
+    <script src = " https://unpkg.com/sweetalert/dist/sweetalert.min.js "></script> 
+
+    <!-- JQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     
     <!-- icons -->
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-    
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     @include('sweetalert::alert')
     </body>
 </html>
