@@ -113,9 +113,12 @@ class EventController extends Controller
 
         $eventOwner = User::where('id', $event->user_id)->first()->toArray();
 <<<<<<< HEAD
+<<<<<<< HEAD
         
         return view('events.show', ['event' => $event, 'eventOwner' => $eventOwner]);
 =======
+=======
+>>>>>>> cdfd3a9162e480d1df77c7348668824e4f72dbdf
 
         return view(
             'events.show', [
@@ -124,6 +127,9 @@ class EventController extends Controller
                 'hasUserJoined' => $hasUserJoined
             ]
         );
+<<<<<<< HEAD
+>>>>>>> cdfd3a9162e480d1df77c7348668824e4f72dbdf
+=======
 >>>>>>> cdfd3a9162e480d1df77c7348668824e4f72dbdf
     }
 
@@ -218,6 +224,7 @@ class EventController extends Controller
         //Vattach = Vincular o usuário ao evento
         $user->eventsAsParticipant()->attach($id);
 <<<<<<< HEAD
+<<<<<<< HEAD
         $event = Event::findOrFail($id);
         return redirect('/dashboard')->with('toast_success', 'Sua presença foi confirmada no evento '.$event->title);
 =======
@@ -264,6 +271,24 @@ class EventController extends Controller
 
         
       
+=======
+      
+        $event = Event::findOrFail($id);
+        
+        return redirect('/dashboard')->with('toast_success', 'Sua presença foi confirmada no evento: '.$event->title);
+    }
+
+    public function leaveEvent($id){
+
+        $user = auth()->user();
+        
+        //detach = Remove o vinculo do usuário com o evento
+        $user->eventsAsParticipant()->detach($id);
+        
+        $event = Event::findOrFail($id);
+      
+        return redirect('/dashboard')->with('toast_success', 'Você saiu com sucesso do evento: '.$event->title);
+>>>>>>> cdfd3a9162e480d1df77c7348668824e4f72dbdf
     }
 
 }

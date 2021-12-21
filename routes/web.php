@@ -36,7 +36,10 @@ Route::put('/events/update/{id}', [EventController::class, 'update'])->middlewar
 Route::post('/events/join/{id}', [EventController::class, 'joinEvent'])->middleware('auth');
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> cdfd3a9162e480d1df77c7348668824e4f72dbdf
 // Sair do evento
 Route::delete('/events/leave/{id}', [EventController::class, 'leaveEvent'])->middleware('auth');
 
