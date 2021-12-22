@@ -89,7 +89,7 @@ $teste = Auth::user()->id;
         <div class="row">
             <div class="form-group col-md-3">
                 {!! Form::label('zip_code', 'Cep:') !!}
-                {!! Form::text('zip_code', null, ['class' => 'form-control text-right cep', 'required'=>'required',  'onkey' => 'buscaCep()']) !!}
+                {!! Form::text('zip_code', null, ['class' => 'form-control text-right cep', 'required'=>'required',  'onblur' => 'buscaCep(this)']) !!}
             </div>
 
              <!-- Complemento Field -->
@@ -200,80 +200,80 @@ $teste = Auth::user()->id;
         });   
     }
 
-    function buscaCep () {
-      valor = $('.cep').val();
-      if (valor.length == 9) {
-        startLoading();
-        valor = valor.replace('-', '');
-        $.ajax({
-          url: '/cep/' + valor,
-          dataType: 'json',
-          crossDomain: true,
-        }).done(function (json) {
-          console.log(json);
-          stopLoading();
-          if (json.cidade) {
-            console.log(json);
-            $("#street").val(json.logradouro);
-            $("#neighborhood").val(json.bairro);
-            $("#city").val(json.localidade);
-            $("#state").val(json.uf);  
-            $("#number").focus();
-          }
-          else {
-            swal('CEP não encontrado', '', 'error');
-          }
-        }).fail(function () {
-          stopLoading();
-          swal('CEP não encontrado!', '', 'error');
-        });
-      }
-    }
+    // function buscaCep () {
+    //   valor = $('.cep').val();
+    //   if (valor.length == 9) {
+    //     startLoading();
+    //     valor = valor.replace('-', '');
+    //     $.ajax({
+    //       url: '/cep/' + valor,
+    //       dataType: 'json',
+    //       crossDomain: true,
+    //     }).done(function (json) {
+    //       console.log(json);
+    //       stopLoading();
+    //       if (json.cidade) {
+    //         console.log(json);
+    //         $("#street").val(json.logradouro);
+    //         $("#neighborhood").val(json.bairro);
+    //         $("#city").val(json.localidade);
+    //         $("#state").val(json.uf);  
+    //         $("#number").focus();
+    //       }
+    //       else {
+    //         swal('CEP não encontrado', '', 'error');
+    //       }
+    //     }).fail(function () {
+    //       stopLoading();
+    //       swal('CEP não encontrado!', '', 'error');
+    //     });
+    //   }
+    // }
 
-    // function validaCEP(obj){
-    //     var cep = document.getElementById("zip_code").value
-    //     var url = "https://viacep.com.br/ws/"+cep+"/json";
-    //     var link = 'https://buscacepinter.correios.com.br/app/endereco/index.php';
+    function buscaCep(obj){
+        var cep = document.getElementById("zip_code").value
+        var url = "https://viacep.com.br/ws/"+cep+"/json";
+        var link = 'https://buscacepinter.correios.com.br/app/endereco/index.php';
         
 
-    //     $.ajax({
-    //         url: url,
-    //         type: "get",
-    //         dataType: 'json',
+        $.ajax({
+            url: url,
+            type: "get",
+            dataType: 'json',
 
-    //         success:function(dados){
-    //             console.log(dados);
-    //             $("#street").val(dados.logradouro);
-    //             $("#neighborhood").val(dados.bairro);
-    //             $("#city").val(dados.localidade);
-    //             $("#state").val(dados.uf);   
-    //             if (dados.erro){
-    //                 swal("CEP não localizado!", "Deseja verificar CEP em Correios?", {
-    //                     buttons: {
+            success:function(dados){
+                console.log(dados);
+                $("#street").val(dados.logradouro);
+                $("#neighborhood").val(dados.bairro);
+                $("#city").val(dados.localidade);
+                $("#state").val(dados.uf);   
+                if (dados.erro){
+                    swal("CEP não localizado!", "Deseja verificar CEP em Correios?", {
+                        buttons: {
 
-    //                         cancel: "Não",
+                            cancel: "Não",
                             
-    //                         catch: {
-    //                             text: "Sim",
-    //                             value: "catch", 
-    //                         },
-    //                     }
-    //                 }) 
-    //                 .then((value) => {
-    //                     switch (value){
-    //                         case "cancel":
-    //                         swal.close();
-    //                         break;
+                            catch: {
+                                text: "Sim",
+                                value: "catch", 
+                            },
+                        }
+                    }) 
+                    .then((value) => {
+                        switch (value){
+                            case "cancel":
+                            swal.close();
+                            break;
 
-    //                         case "catch":
-    //                         window.location.href = link;     
-    //                         break;
-    //                     }
-    //                 });
-    //             }
-    //         },
-    //     })
-    // }
+                            case "catch":
+                            window.location.href = link;     
+                            break;
+                        }
+                    });
+                }
+            },
+        })
+    }
 </script>
 @stop
 
