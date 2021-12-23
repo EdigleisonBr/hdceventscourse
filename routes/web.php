@@ -12,6 +12,7 @@ use App\Http\Controllers\CrudController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PersonController;
 use App\Http\Controllers\CepController;
+use App\Http\Controllers\AddressController;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,7 +49,8 @@ Route::get('/crud_store', [CrudController::class, 'store']);
 
 Route::get('/valida-nome', [EventController::class, 'validaNome']);
 
-Route::get('/addresses/create', [EventController::class, 'createAddress']);
+Route::post('/addresses', [AddressController::class, 'store']);
+Route::get('/addresses/create', [AddressController::class, 'create']);
 
 /*
 |--------------------------------------------------------------------------
@@ -57,13 +59,14 @@ Route::get('/addresses/create', [EventController::class, 'createAddress']);
 |   Rota de Providers de busca de CEP via API
 */
 
-// Route::get('/cep/{cep}', 'CepController@buscaPorCep');
-
-// package:: canducci/cep
-Route::get('/busca-cep', [CepController::class, 'buscaPorCep']);
+// package:: brasil-api
+Route::get('/busca-cep/{cep}', [CepController::class, 'buscaPorCep']);
 
 // package:: cagartner-correios-consulta
 Route::get('/buscacep', [CepController::class, 'buscaCep']);
+
+// package:: canducci/cep
+Route::get('/buscacepteste', [CepController::class, 'buscaCepTeste']);
 
 
 

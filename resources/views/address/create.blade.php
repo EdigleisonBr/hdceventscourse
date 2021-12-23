@@ -13,7 +13,7 @@ $teste = Auth::user()->id;
 <div id="event-create-container">
     <h1>Endereço:</h1>
     <br>
-    <form action="/events" method="POST" enctype="multipart/form-data">
+    <form action="/addresses" method="POST" enctype="multipart/form-data">
         @csrf
 
             <!-- errors -->
@@ -30,7 +30,7 @@ $teste = Auth::user()->id;
         <div class="row ml-1">
             <div class="form-group col-md-3">
                 {!! Form::label('zip_code', 'Cep:') !!}
-                {!! Form::text('zip_code', null, ['class' => 'form-control text-right cep', 'required'=>'required',  'onblur' => 'buscaCep(this)']) !!}
+                {!! Form::text('zip_code', null, ['class' => 'form-control text-right cep', 'required'=>'required',  'onblur' => 'buscaCep(this)', 'minlength' => '9']) !!}
            </div>
 
              <!-- Complemento Field -->
@@ -51,9 +51,9 @@ $teste = Auth::user()->id;
                 {!! Form::label('cd_tipo_logradouro', 'Logradouro:') !!}
                 {!! Form::select('cd_tipo_logradouro',[
                 ''=>'',
-                'R'=>'Rua',
-                'A'=>'Avenida',
-                'T' => 'Travessa',
+                'Rua'=>'Rua',
+                'Avenida'=>'Avenida',
+                'Travessa' => 'Travessa',
                 ], null, ['class' => 'form-control']) !!}
             </div>
         </div>
@@ -107,42 +107,43 @@ $teste = Auth::user()->id;
             if (valor.length == 9) {
                 valor = valor.replace('-', '');
                 $.ajax({
-                url: '/busca-cep',
-                dataType: 'json',
-                    data: {
-                        cep: valor,
+                    url: '/busca-cep/'+valor,
+                    dataType: 'json',
+                        data: {
+                            cep: valor,
+                        },
+                    success: function(data) {
+                        if (data.bairro){
+                            $("#street").val(data.logradouro);
+                            $("#neighborhood").val(data.bairro);
+                            $("#city").val(data.cidade);
+                            $("#state").val(data.estado);  
+                            $("#complement").focus();
+                        }
+                        else{
+                            swal("CEP não localizado!", "Deseja verificar CEP em Correios?", {
+                                buttons: {
+                                    cancel: "Não",
+    
+                                    catch: {
+                                        text: "Sim",
+                                        value: "catch", 
+                                    },
+                                }
+                            }) 
+                            .then((value) => {
+                                switch (value){
+                                    case "cancel":
+                                    swal.close();
+                                    break;
+
+                                    case "catch":
+                                    window.open(link);     
+                                    break;
+                                }
+                            });
+                        }
                     },
-                }).fail(function (retorno) { 
-                    if (retorno.responseJSON.data.logradouro){
-                        $("#street").val(retorno.responseJSON.data.logradouro);
-                        $("#neighborhood").val(retorno.responseJSON.data.bairro);
-                        $("#city").val(retorno.responseJSON.data.localidade);
-                        $("#state").val(retorno.responseJSON.data.uf);  
-                        $("#number").focus();
-                    }
-                }).done(function () {
-                    swal("CEP não localizado!", "Deseja verificar CEP em Correios?", {
-                        buttons: {
-
-                            cancel: "Não",
-                            
-                            catch: {
-                                text: "Sim",
-                                value: "catch", 
-                            },
-                        }
-                    }) 
-                    .then((value) => {
-                        switch (value){
-                            case "cancel":
-                            swal.close();
-                            break;
-
-                            case "catch":
-                            window.open(link);     
-                            break;
-                        }
-                    });
                 });
             } 
         }

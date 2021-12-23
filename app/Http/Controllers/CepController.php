@@ -7,10 +7,14 @@ use Correios;
 use Cep;
 use Endereco;
 
+use Bugsnag\BugsnagLaravel\Facades\Bugsnag;
+use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Log;
+
 class CepController extends Controller
 {   
     // package:: canducci/cep
-    public function buscaPorCep()
+    public function buscaPorCepTeste()
     {
         $cepResponse = cep(request()->get('cep'));
         $data = $cepResponse->getCepModel();
@@ -30,5 +34,37 @@ class CepController extends Controller
         return Correios::cep('14407627');
     }
 
+    // package:: brasil-api
+    public function buscaPorCep($cep) {
+        $uri = 'https://brasilapi.com.br/api/cep/v1/' . $cep;
+
+        $dados = [];
+        try {
+            $client = new Client();
+            $response = $client->get($uri);
+            $dados = json_decode($response->getBody()->getContents());
+
+            $dados->cidade = $dados->city;
+            $dados->logradouro = $dados->street;
+            $dados->bairro = $dados->neighborhood;
+            $dados->estado = $dados->state;
+
+            unset($dados->city);
+            unset($dados->street);
+            unset($dados->neighborhood);
+            unset($dados->state);
+
+        } catch (\Exception $e) {
+            if ($e->getCode() != 404) {
+                Log::error($e);
+                Bugsnag::notifyException($e);
+            }
+        }
+        return json_encode($dados);
+   
+    }
 }
+
+
+
 

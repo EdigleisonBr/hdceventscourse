@@ -40,7 +40,7 @@ class EventController extends Controller
         if ($validator->fails()) {
             return back()->with('toast_error', 'Nome do Evento não pode ter menos que 3 caracteres!');
         }
-
+        
         // if ($validator->fails()) {
         //     return back()->with('toast_error', $validator->messages()->all()[0])->withInput();
         // }
@@ -54,17 +54,6 @@ class EventController extends Controller
         $event->private = $request->private;
         $event->description = $request->description;
         $event->items = $request->items;
-
-        $address = new Address;
-        
-        $address->zip_code       = $request->zip_code; 
-        $address->street         = $request->street;
-        $address->address_number = $request->address_number;
-        $address->complement     = $request->complement;
-        $address->city           = $request->city;
-        $address->state          = $request->state;
-        $address->neighborhood   = $request->neighborhood;
-        $address->event_id       = $request->event_id;
 
         //Image upload
         if($request->hasFile('image') && $request->file('image')->isValid()) {
@@ -85,8 +74,7 @@ class EventController extends Controller
         $event->user_id = $user->id;
 
         $event->save();
-        $address->save();
-
+        
         return redirect('/')->with('toast_success', 'Evento criado com sucesso!');
     }
     
@@ -183,28 +171,6 @@ class EventController extends Controller
         Event::findOrFail($request->id)->update($data);
 
         return redirect('/dashboard')->with('toast_success', 'Evento editado com sucesso!');
-    }
-
-    public function createAddress(){
-        return view('address.create');
-    }
-
-    public function create_address(Request $request){
-
-        $address = new Address;
-        
-        $address->zip_code       = $request->zip_code; 
-        $address->street         = $request->street;
-        $address->address_number = $request->address_number;
-        $address->complement     = $request->complement;
-        $address->city           = $request->city;
-        $address->state          = $request->state;
-        $address->neighborhood   = $request->neighborhood;
-        $address->event_id       = $request->event_id;
-
-        $address->save();
-
-        return redirect('/')->with('toast_success', 'Endereço criado com sucesso!');
     }
 
     public function joinEvent($id){
