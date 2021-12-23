@@ -60,7 +60,7 @@ Route::get('/addresses/create', [AddressController::class, 'create']);
 */
 
 // package:: brasil-api
-Route::get('/busca-cep/{cep}', [CepController::class, 'buscaPorCep']);
+Route::get('/cep/{cep}', [CepController::class, 'buscaPorCep']);
 
 // package:: cagartner-correios-consulta
 Route::get('/buscacep', [CepController::class, 'buscaCep']);

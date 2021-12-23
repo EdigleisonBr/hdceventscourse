@@ -30,7 +30,7 @@ $teste = Auth::user()->id;
         <div class="row ml-1">
             <div class="form-group col-md-3">
                 {!! Form::label('zip_code', 'Cep:') !!}
-                {!! Form::text('zip_code', null, ['class' => 'form-control text-right cep', 'required'=>'required',  'onblur' => 'buscaCep(this)', 'minlength' => '9']) !!}
+                {!! Form::text('zip_code', null, ['class' => 'form-control text-right cep', 'required'=>'required',  'onkeyup' => 'buscaCep(this)', 'minlength' => '9']) !!}
            </div>
 
              <!-- Complemento Field -->
@@ -100,52 +100,97 @@ $teste = Auth::user()->id;
 @section('scripts')
     <script type="text/javascript">
 
+        // function buscaCep () {
+        //     valor = $('.cep').val();
+        //     var link = 'https://buscacepinter.correios.com.br/app/endereco/index.php';
+
+        //     if (valor.length == 9) {
+        //         valor = valor.replace('-', '');
+        //         $.ajax({
+        //             url: '/busca-cep/'+valor,
+        //             dataType: 'json',
+        //                 data: {
+        //                     cep: valor,
+        //                 },
+        //             success: function(data) {
+        //                 if (data.bairro){
+        //                     $("#street").val(data.logradouro);
+        //                     $("#neighborhood").val(data.bairro);
+        //                     $("#city").val(data.cidade);
+        //                     $("#state").val(data.estado);  
+        //                     $("#complement").focus();
+        //                 }
+        //                 else{
+        //                     swal("CEP não localizado!", "Deseja verificar CEP em Correios?", {
+        //                         buttons: {
+        //                             cancel: "Não",
+    
+        //                             catch: {
+        //                                 text: "Sim",
+        //                                 value: "catch", 
+        //                             },
+        //                         }
+        //                     }) 
+        //                     .then((value) => {
+        //                         switch (value){
+        //                             case "cancel":
+        //                             swal.close();
+        //                             break;
+
+        //                             case "catch":
+        //                             window.open(link);     
+        //                             break;
+        //                         }
+        //                     });
+        //                 }
+        //             },
+        //         });
+        //     } 
+        // }
+
         function buscaCep () {
             valor = $('.cep').val();
             var link = 'https://buscacepinter.correios.com.br/app/endereco/index.php';
 
             if (valor.length == 9) {
+                //startLoading();
                 valor = valor.replace('-', '');
                 $.ajax({
-                    url: '/busca-cep/'+valor,
-                    dataType: 'json',
-                        data: {
-                            cep: valor,
-                        },
-                    success: function(data) {
-                        if (data.bairro){
-                            $("#street").val(data.logradouro);
-                            $("#neighborhood").val(data.bairro);
-                            $("#city").val(data.cidade);
-                            $("#state").val(data.estado);  
-                            $("#complement").focus();
-                        }
-                        else{
-                            swal("CEP não localizado!", "Deseja verificar CEP em Correios?", {
-                                buttons: {
-                                    cancel: "Não",
-    
-                                    catch: {
-                                        text: "Sim",
-                                        value: "catch", 
-                                    },
-                                }
-                            }) 
-                            .then((value) => {
-                                switch (value){
-                                    case "cancel":
-                                    swal.close();
-                                    break;
+                url: '/cep/' + valor,
+                dataType: 'json',
+                crossDomain: true,
+                }).fail(function (retorno) {
+                    if (retorno.responseJSON.data.logradouro) {
+                        $("#street").val(retorno.responseJSON.data.logradouro);
+                        $("#neighborhood").val(retorno.responseJSON.data.bairro);
+                        $("#city").val(retorno.responseJSON.data.cidade);
+                        $("#state").val(retorno.responseJSON.data.estado);  
+                        $("#address_number").focus();
+                    }
+                }).done(function () {
+                    swal("CEP não localizado!", "Deseja verificar CEP em Correios?", {
+                        buttons: {
+                            cancel: "Não",
 
-                                    case "catch":
-                                    window.open(link);     
-                                    break;
-                                }
-                            });
+                            catch: {
+                                text: "Sim",
+                                value: "catch", 
+                            },
+                        },
+                    }) 
+                    .then((value) => {
+                        switch (value){
+                            case "cancel":
+                            swal.close();
+                            break;
+
+                            case "catch":
+                            window.open(link);     
+                            break;
                         }
-                    },
+                    });
                 });
-            } 
+            }
         }
     </script>
 @stop

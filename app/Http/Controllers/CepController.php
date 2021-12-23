@@ -60,8 +60,16 @@ class CepController extends Controller
                 Bugsnag::notifyException($e);
             }
         }
-        return json_encode($dados);
-   
+        if ($dados != null){
+            return response()->json(['success' => true, 'data' => $dados], 422);
+            //return json_encode($dados);
+        }
+        else{
+            //return json_encode($dados);
+            return response()->json(['success' => false]);
+        }
+
+        
     }
 }
 
