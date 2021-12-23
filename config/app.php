@@ -176,8 +176,8 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\FortifyServiceProvider::class,
         App\Providers\JetstreamServiceProvider::class,
-        //Cagartner\CorreiosConsulta\ServiceProvider::class,
-
+        Cagartner\CorreiosConsulta\ServiceProvider::class,
+        Canducci\Cep\Providers\CepServiceProvider::class,
     ],
 
     /*
@@ -231,7 +231,9 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-        //'Correios' => Cagartner\CorreiosConsulta\Facade::class,
+        'Correios' => Cagartner\CorreiosConsulta\Facade::class,
+        'Cep' => Canducci\Cep\Facades\Cep::class,
+        'Endereco' => Canducci\Cep\Facades\Endereco::class,
     ],
 
 ];

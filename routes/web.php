@@ -2,7 +2,16 @@
 
 use Illuminate\Support\Facades\Route;
 use RealRashid\SweetAlert\Facades\Alert;
+use Cagartner\CorreiosConsulta\ServiceProvider;
+use Canducci\Cep\Providers\CepServiceProvider;
 
+// Importando Controllers
+
+use App\Http\Controllers\EventController;
+use App\Http\Controllers\CrudController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\PersonController;
+use App\Http\Controllers\CepController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,13 +23,6 @@ use RealRashid\SweetAlert\Facades\Alert;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-// Importando Controllers
-
-use App\Http\Controllers\EventController;
-use App\Http\Controllers\CrudController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\PersonController;
 
 Route::get('/dashboard', [EventController::class, 'dashboard'])->middleware('auth');
 Route::get('/', [EventController::class, 'index']);
@@ -48,7 +50,10 @@ Route::get('/valida-nome', [EventController::class, 'validaNome']);
 
 Route::get('/addresses/create', [EventController::class, 'createAddress']);
 
-Route::get('/cep/{cep}', 'CepController@buscaPorCep');
+// Route::get('/cep/{cep}', 'CepController@buscaPorCep');
+
+Route::get('/busca-cep', [CepController::class, 'buscaPorCep']);
+
 
 
 
