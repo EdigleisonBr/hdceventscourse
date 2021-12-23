@@ -50,9 +50,20 @@ Route::get('/valida-nome', [EventController::class, 'validaNome']);
 
 Route::get('/addresses/create', [EventController::class, 'createAddress']);
 
+/*
+|--------------------------------------------------------------------------
+| Pacotes Busca CEP
+|--------------------------------------------------------------------------
+|   Rota de Providers de busca de CEP via API
+*/
+
 // Route::get('/cep/{cep}', 'CepController@buscaPorCep');
 
+// package:: canducci/cep
 Route::get('/busca-cep', [CepController::class, 'buscaPorCep']);
+
+// package:: cagartner-correios-consulta
+Route::get('/buscacep', [CepController::class, 'buscaCep']);
 
 
 

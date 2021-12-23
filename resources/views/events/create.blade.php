@@ -86,79 +86,6 @@ $teste = Auth::user()->id;
             </div>
         </div>  
 
-        <div class="row">
-            <div class="form-group col-md-3">
-                {!! Form::label('zip_code', 'Cep:') !!}
-                {!! Form::text('zip_code', null, ['class' => 'form-control text-right cep', 'required'=>'required',  'onblur' => 'buscaCep(this)']) !!}
-            </div>
-
-             <!-- Complemento Field -->
-            <div class="form-group col-md-3">
-                {!! Form::label('complement', 'Complemento:') !!}
-                {!! Form::text('complement', null, ['class' => 'form-control']) !!}
-            </div>
-
-              <!-- Numero Field -->
-            <div class="form-group col-md-3">
-                {!! Form::label('address_number', 'Número:') !!}
-                {!! Form::number('address_number', null, ['class' => 'form-control text-right',
-                'required'=>'required', 'max' => '99999', 'min' => '0', 'step'=>'1' ]) !!}
-            </div>
-    
-            <!-- cd_tipo_logradouro Field -->
-            <div class="form-group col-sm-3">
-                {!! Form::label('cd_tipo_logradouro', 'Logradouro:') !!}
-                {!! Form::select('cd_tipo_logradouro',[
-                ''=>'',
-                'R'=>'Rua',
-                'A'=>'Avenida',
-                'T' => 'Travessa',
-                ], null, ['class' => 'form-control']) !!}
-            </div>
-        </div>
-
-        <div class="row">
-            <!-- Endereco Field -->
-            <div class="form-group col-md-4">
-                {!! Form::label('street', 'Endereço:') !!}
-                {!! Form::text('street', null, ['class' => 'form-control','autocomplete' => 'chrome-off', 'required'=>'required']) !!}
-            </div>
-    
-            <!-- Bairro Field -->
-            <div class="form-group col-md-3">
-                {!! Form::label('neighborhood', 'Bairro:') !!}
-                {!! Form::text('neighborhood', null, ['class' => 'form-control','autocomplete' => 'chrome-off', 'required'=>'required']) !!}
-            </div>
-       
-            <!-- Cidade Field -->
-            <div class="form-group col-md-3">
-                {!! Form::label('city', 'Cidade:') !!}
-                {!! Form::text('city', null, ['class' => 'form-control','autocomplete' => 'chrome-off', 'required'=>'required']) !!}
-            </div>
-
-              <!-- Estado Field -->
-            <div class="form-group col-md-2">
-                {!! Form::label('state', 'Estado:') !!}
-                {!! Form::text('state', null, ['class' => 'form-control text-uppercase','autocomplete' => 'chrome-off', 'required'=>'required','maxlength'=>'2']) !!}
-            </div>
-        </div>
-      
-        <!-- Estado Field -->
-        <div class="form-group">
-            {!! Form::hidden('event_id', 1, ['class' => 'form-control text-uppercase','autocomplete' => 'chrome-off', 'required'=>'required','maxlength'=>'2']) !!}
-        </div>
-    
-        @if (auth()->user()->name == 'Edigleison')
-            <!-- Active Field -->
-            <div class="form-group col-sm-6">
-                {!! Form::label('active', 'Ativo') !!}
-                <div class="form-control">
-                    {!! Form::checkbox('active', 0,[ 'id'=>'active']) !!}
-                </div>
-            </div>
-          
-        @endif 
-
         {{-- button --}}
         <input type="submit" class="btn btn-primary" value="Criar evento">   
     </form> 
@@ -166,133 +93,40 @@ $teste = Auth::user()->id;
 @endsection
 
 @section('scripts')
-<script type="text/javascript">
+    <script type="text/javascript">
 
-    function validaNome (obj) {
-        var nome = obj.value;
-        
-        if (!/^[A-Za-z\s]*$/g.test(obj.value)) {
-        //if (!/^[A-Za-z'\s]*$/.test(obj.value)) {
-            alert('caracteres');
-            $('.teste').focus();
-            $('.teste').val('');
-           
-        }
-
-       // swal("Good job!", "You clicked the button!", "success");
-        $.ajax({
-            url: '/valida-nome',
-            dataType: 'json',
-            data:{
-                name: nome,
-            },
-        }).done(
-        function (){
-            stopLoading();
-        }).fail(function (retorno) { 
-            if (retorno.responseJSON.aux){
-                swal("Nome já inserido no banco de dados", retorno.responseJSON.aux, "error");
-                stopLoading();
-                obj.value = '';
-                obj.focus();
-                return false;
+        function validaNome (obj) {
+            var nome = obj.value;
+            
+            if (!/^[A-Za-z\s]*$/g.test(obj.value)) {
+            //if (!/^[A-Za-z'\s]*$/.test(obj.value)) {
+                alert('caracteres');
+                $('.teste').focus();
+                $('.teste').val('');
+            
             }
-        });   
-    }
 
-    function buscaCep () {
-        valor = $('.cep').val();
-        var link = 'https://buscacepinter.correios.com.br/app/endereco/index.php';
-
-        if (valor.length == 9) {
-            valor = valor.replace('-', '');
+        // swal("Good job!", "You clicked the button!", "success");
             $.ajax({
-            url: '/busca-cep',
-            dataType: 'json',
-                data: {
-                    cep: valor,
+                url: '/valida-nome',
+                dataType: 'json',
+                data:{
+                    name: nome,
                 },
+            }).done(
+            function (){
+                stopLoading();
             }).fail(function (retorno) { 
-                if (retorno.responseJSON.data.logradouro){
-                    $("#street").val(retorno.responseJSON.data.logradouro);
-                    $("#neighborhood").val(retorno.responseJSON.data.bairro);
-                    $("#city").val(retorno.responseJSON.data.localidade);
-                    $("#state").val(retorno.responseJSON.data.uf);  
-                    $("#number").focus();
+                if (retorno.responseJSON.aux){
+                    swal("Nome já inserido no banco de dados", retorno.responseJSON.aux, "error");
+                    stopLoading();
+                    obj.value = '';
+                    obj.focus();
+                    return false;
                 }
-            }).done(function () {
-                swal("CEP não localizado!", "Deseja verificar CEP em Correios?", {
-                    buttons: {
-
-                        cancel: "Não",
-                        
-                        catch: {
-                            text: "Sim",
-                            value: "catch", 
-                        },
-                    }
-                }) 
-                .then((value) => {
-                    switch (value){
-                        case "cancel":
-                        swal.close();
-                        break;
-
-                        case "catch":
-                        window.location.href = link;     
-                        break;
-                    }
-                });
-            });
-        } 
-        
-    }
-
-    // function buscaCep(obj){
-    //     var cep = document.getElementById("zip_code").value
-    //     var url = "https://viacep.com.br/ws/"+cep+"/json";
-    //     var link = 'https://buscacepinter.correios.com.br/app/endereco/index.php';
-        
-
-    //     $.ajax({
-    //         url: url,
-    //         type: "get",
-    //         dataType: 'json',
-
-    //         success:function(dados){
-    //             console.log(dados);
-    //             $("#street").val(dados.logradouro);
-    //             $("#neighborhood").val(dados.bairro);
-    //             $("#city").val(dados.localidade);
-    //             $("#state").val(dados.uf);   
-    //             if (dados.erro){
-    //                 swal("CEP não localizado!", "Deseja verificar CEP em Correios?", {
-    //                     buttons: {
-
-    //                         cancel: "Não",
-                            
-    //                         catch: {
-    //                             text: "Sim",
-    //                             value: "catch", 
-    //                         },
-    //                     }
-    //                 }) 
-    //                 .then((value) => {
-    //                     switch (value){
-    //                         case "cancel":
-    //                         swal.close();
-    //                         break;
-
-    //                         case "catch":
-    //                         window.location.href = link;     
-    //                         break;
-    //                     }
-    //                 });
-    //             }
-    //         },
-    //     })
-    // }
-</script>
+            });   
+        }
+    </script>
 @stop
 
 
