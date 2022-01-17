@@ -80,9 +80,43 @@ $teste = Auth::user()->id;
             </div>
 
               <!-- Estado Field -->
-            <div class="form-group col-md-3">
+            {{-- <div class="form-group col-md-3">
                 {!! Form::label('state', 'Estado:') !!}
                 {!! Form::text('state', null, ['class' => 'form-control text-uppercase','autocomplete' => 'chrome-off', 'required'=>'required','maxlength'=>'2']) !!}
+            </div> --}}
+               <!-- Tipo Atendimento Field -->
+            <div class="form-group col-sm-6 sadt">
+                {!! Form::label('state', 'Estado:') !!}
+                {!! Form::select('state', [
+                ''=>'Escolha',
+                'AC'=>'Acre',
+                'AL'=>'Alagoas',
+                'AP'=>'Amapá',
+                'AM'=>'Amazonas',
+                'BA'=>'Bahia',
+                'CE'=>'Ceará',
+                'DF'=>'Distrito Federal',
+                'ES'=>'Espírito Santo',
+                'GO'=>'Goiás',
+                'MA'=>'Maranhão',
+                'MT'=>'Mato Grosso',
+                'MS'=>'Mato Grosso do Sul',
+                'MG'=>'Minas Gerais',
+                'PA'=>'Pará',
+                'PB'=>'Paraíba',
+                'PR'=>'Paraná',
+                'PE'=>'Pernambuco',
+                'PI'=>'Piauí',
+                'RJ'=>'Rio de Janeiro',
+                'RN'=>'Rio Grande do Norte',
+                'RS'=>'Rio Grande do Sul',
+                'RO'=>'Rondônia',
+                'RR'=>'Roraima',
+                'SC'=>'Santa Catarina',
+                'SP'=>'São Paulo',
+                'SE'=>'Sergipe',
+                'TO'=>'Tocantins',
+                ], null, ['class' => 'form-control select2']) !!}
             </div>
         </div>      
       
@@ -100,98 +134,98 @@ $teste = Auth::user()->id;
 @section('scripts')
     <script type="text/javascript">
 
-        // function buscaCep () {
-        //     valor = $('.cep').val();
-        //     var link = 'https://buscacepinter.correios.com.br/app/endereco/index.php';
-
-        //     if (valor.length == 9) {
-        //         valor = valor.replace('-', '');
-        //         $.ajax({
-        //             url: '/busca-cep/'+valor,
-        //             dataType: 'json',
-        //                 data: {
-        //                     cep: valor,
-        //                 },
-        //             success: function(data) {
-        //                 if (data.bairro){
-        //                     $("#street").val(data.logradouro);
-        //                     $("#neighborhood").val(data.bairro);
-        //                     $("#city").val(data.cidade);
-        //                     $("#state").val(data.estado);  
-        //                     $("#complement").focus();
-        //                 }
-        //                 else{
-        //                     swal("CEP não localizado!", "Deseja verificar CEP em Correios?", {
-        //                         buttons: {
-        //                             cancel: "Não",
-    
-        //                             catch: {
-        //                                 text: "Sim",
-        //                                 value: "catch", 
-        //                             },
-        //                         }
-        //                     }) 
-        //                     .then((value) => {
-        //                         switch (value){
-        //                             case "cancel":
-        //                             swal.close();
-        //                             break;
-
-        //                             case "catch":
-        //                             window.open(link);     
-        //                             break;
-        //                         }
-        //                     });
-        //                 }
-        //             },
-        //         });
-        //     } 
-        // }
-
         function buscaCep () {
             valor = $('.cep').val();
             var link = 'https://buscacepinter.correios.com.br/app/endereco/index.php';
 
             if (valor.length == 9) {
-                //startLoading();
                 valor = valor.replace('-', '');
                 $.ajax({
-                url: '/cep/' + valor,
-                dataType: 'json',
-                crossDomain: true,
-                }).fail(function (retorno) {
-                    if (retorno.responseJSON.data.logradouro) {
-                        $("#street").val(retorno.responseJSON.data.logradouro);
-                        $("#neighborhood").val(retorno.responseJSON.data.bairro);
-                        $("#city").val(retorno.responseJSON.data.cidade);
-                        $("#state").val(retorno.responseJSON.data.estado);  
-                        $("#address_number").focus();
-                    }
-                }).done(function () {
-                    swal("CEP não localizado!", "Deseja verificar CEP em Correios?", {
-                        buttons: {
-                            cancel: "Não",
-
-                            catch: {
-                                text: "Sim",
-                                value: "catch", 
-                            },
+                    url: '/cep/'+valor,
+                    dataType: 'json',
+                        data: {
+                            cep: valor,
                         },
-                    }) 
-                    .then((value) => {
-                        switch (value){
-                            case "cancel":
-                            swal.close();
-                            break;
-
-                            case "catch":
-                            window.open(link);     
-                            break;
+                    success: function(data) {
+                        if (data.bairro){
+                            $("#street").val(data.logradouro);
+                            $("#neighborhood").val(data.bairro);
+                            $("#city").val(data.cidade);
+                            $("#state").val(data.estado);  
+                            $("#complement").focus();
                         }
-                    });
+                        else{
+                            swal("CEP não localizado!", "Deseja verificar CEP em Correios?", {
+                                buttons: {
+                                    cancel: "Não",
+    
+                                    catch: {
+                                        text: "Sim",
+                                        value: "catch", 
+                                    },
+                                }
+                            }) 
+                            .then((value) => {
+                                switch (value){
+                                    case "cancel":
+                                    swal.close();
+                                    break;
+
+                                    case "catch":
+                                    window.open(link);     
+                                    break;
+                                }
+                            });
+                        }
+                    },
                 });
-            }
+            } 
         }
+
+        // function buscaCep () {
+        //     valor = $('.cep').val();
+        //     var link = 'https://buscacepinter.correios.com.br/app/endereco/index.php';
+
+        //     if (valor.length == 9) {
+        //         //startLoading();
+        //         valor = valor.replace('-', '');
+        //         $.ajax({
+        //         url: '/cep/' + valor,
+        //         dataType: 'json',
+        //         crossDomain: true,
+        //         }).fail(function (retorno) {
+        //             if (retorno.responseJSON.data.logradouro) {
+        //                 $("#street").val(retorno.responseJSON.data.logradouro);
+        //                 $("#neighborhood").val(retorno.responseJSON.data.bairro);
+        //                 $("#city").val(retorno.responseJSON.data.cidade);
+        //                 $("#state").val(retorno.responseJSON.data.estado);  
+        //                 $("#address_number").focus();
+        //             }
+        //         }).done(function () {
+        //             swal("CEP não localizado!", "Deseja verificar CEP em Correios?", {
+        //                 buttons: {
+        //                     cancel: "Não",
+
+        //                     catch: {
+        //                         text: "Sim",
+        //                         value: "catch", 
+        //                     },
+        //                 },
+        //             }) 
+        //             .then((value) => {
+        //                 switch (value){
+        //                     case "cancel":
+        //                     swal.close();
+        //                     break;
+
+        //                     case "catch":
+        //                     window.open(link);     
+        //                     break;
+        //                 }
+        //             });
+        //         });
+        //     }
+        // }
     </script>
 @stop
 

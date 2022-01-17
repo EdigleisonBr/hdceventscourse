@@ -97,16 +97,15 @@ $teste = Auth::user()->id;
 
         function validaNome (obj) {
             var nome = obj.value;
-            
+
             if (!/^[A-Za-z\s]*$/g.test(obj.value)) {
             //if (!/^[A-Za-z'\s]*$/.test(obj.value)) {
                 alert('caracteres');
                 $('.teste').focus();
                 $('.teste').val('');
-            
             }
-
-        // swal("Good job!", "You clicked the button!", "success");
+           
+            // swal("Good job!", "You clicked the button!", "success");
             $.ajax({
                 url: '/valida-nome',
                 dataType: 'json',
